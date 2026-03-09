@@ -139,6 +139,7 @@ type LiveTransactionTableProps = {
   showAccount: boolean;
   showCategory: boolean;
   showCleared: boolean;
+  showReimbursable: boolean;
   isAdding: boolean;
   onTransactionsChange?: (newTrans: TransactionEntity[]) => void;
   onCloseAddTransaction?: () => void;
@@ -283,6 +284,7 @@ function renderTransactions(extraProps?: Partial<LiveTransactionTableProps>) {
     showAccount: true,
     showCategory: true,
     showCleared: true,
+    showReimbursable: true,
     isAdding: false,
     onTransactionsChange: t => {
       transactions = t;
