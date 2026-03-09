@@ -1231,6 +1231,14 @@ const TransactionEditInner = memo<TransactionEditInnerProps>(
                 />
               </View>
             )}
+            <View style={{ alignItems: 'center' }}>
+              <FieldLabel title={t('Reimbursable')} />
+              <ToggleField
+                id="reimbursable"
+                isOn={!!transaction.reimbursable}
+                onToggle={on => onUpdateInner(transaction, 'reimbursable', on)}
+              />
+            </View>
           </View>
 
           <View>

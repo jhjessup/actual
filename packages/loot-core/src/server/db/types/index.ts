@@ -170,6 +170,9 @@ export type DbTransaction = {
   tombstone: 1 | 0;
   cleared: 1 | 0;
   reconciled: 1 | 0;
+  reimbursable: 1 | 0;
+  reimbursed: 1 | 0;
+  reimbursed_by?: DbTransaction['id'] | null;
   // Unused in the codebase
   pending?: 1 | 0 | null;
   location?: string | null;
@@ -279,6 +282,9 @@ export type DbViewTransactionInternal = {
   cleared: DbTransaction['cleared'];
   tombstone: DbTransaction['tombstone'];
   reconciled: DbTransaction['reconciled'];
+  reimbursable: DbTransaction['reimbursable'];
+  reimbursed: DbTransaction['reimbursed'];
+  reimbursed_by: DbTransaction['reimbursed_by'];
 };
 
 export type DbViewTransactionInternalAlive = DbViewTransactionInternal;

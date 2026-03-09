@@ -21,6 +21,9 @@ exports[`Accounts > Transfers are properly updated 1`] = `
     "pending": 0,
     "raw_synced_data": null,
     "reconciled": 0,
+    "reimbursable": 0,
+    "reimbursed": 0,
+    "reimbursed_by": null,
     "schedule": null,
     "sort_order": 123456789,
     "starting_balance_flag": 0,
@@ -47,6 +50,9 @@ exports[`Accounts > Transfers are properly updated 1`] = `
     "pending": 0,
     "raw_synced_data": null,
     "reconciled": 0,
+    "reimbursable": 0,
+    "reimbursed": 0,
+    "reimbursed_by": null,
     "schedule": null,
     "sort_order": 123456789,
     "starting_balance_flag": 0,
@@ -76,7 +82,7 @@ exports[`Accounts > Transfers are properly updated 2`] = `
       "id": "test-transfer",
       "imported_description": null,
       "isChild": 0,
-@@ -24,15 +24,15 @@
+@@ -27,15 +27,15 @@
       "tombstone": 0,
       "transferred_id": "id2",
       "type": null,
@@ -100,9 +106,9 @@ exports[`Accounts > Transfers are properly updated 3`] = `
 "- First value
 + Second value
 
-@@ -19,12 +19,12 @@
-      "raw_synced_data": null,
-      "reconciled": 0,
+@@ -22,12 +22,12 @@
+      "reimbursed": 0,
+      "reimbursed_by": null,
       "schedule": null,
       "sort_order": 123456789,
       "starting_balance_flag": 0,
@@ -115,9 +121,9 @@ exports[`Accounts > Transfers are properly updated 3`] = `
     Object {
       "acct": "three",
       "amount": -5000,
-@@ -45,10 +45,10 @@
-      "raw_synced_data": null,
-      "reconciled": 0,
+@@ -51,10 +51,10 @@
+      "reimbursed": 0,
+      "reimbursed_by": null,
       "schedule": null,
       "sort_order": 123456789,
       "starting_balance_flag": 0,
