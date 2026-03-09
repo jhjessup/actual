@@ -214,6 +214,8 @@ type AccountInternalProps = {
   setShowNetWorthChart: (newValue: boolean) => void;
   showCleared?: boolean;
   setShowCleared: (newValue: boolean) => void;
+  showReimbursable: boolean;
+  setShowReimbursable: (newValue: boolean) => void;
   showReconciled: boolean;
   setShowReconciled: (newValue: boolean) => void;
   showExtraBalances?: boolean;
@@ -268,6 +270,7 @@ type AccountInternalState = {
   balances: Record<TransactionEntity['id'], IntegerAmount> | null;
   showCleared?: boolean | undefined;
   prevShowCleared?: boolean | undefined;
+  showReimbursable: boolean;
   showReconciled: boolean;
   nameError: string;
   isAdding: boolean;
@@ -318,6 +321,7 @@ class AccountInternal extends PureComponent<
       showBalances: props.showBalances,
       balances: null,
       showCleared: props.showCleared,
+      showReimbursable: props.showReimbursable,
       showReconciled: props.showReconciled,
       nameError: '',
       isAdding: false,
@@ -537,6 +541,7 @@ class AccountInternal extends PureComponent<
           showBalances: nextProps.showBalances,
           balances: null,
           showCleared: nextProps.showCleared,
+          showReimbursable: nextProps.showReimbursable,
           showReconciled: nextProps.showReconciled,
           reconcileAmount: null,
         },
@@ -779,6 +784,7 @@ class AccountInternal extends PureComponent<
       | 'toggle-balance'
       | 'remove-sorting'
       | 'toggle-cleared'
+      | 'toggle-reimbursable'
       | 'toggle-reconciled'
       | 'toggle-net-worth-chart',
   ) => {
@@ -868,6 +874,15 @@ class AccountInternal extends PureComponent<
         } else {
           this.props.setShowCleared(true);
           this.setState({ showCleared: true });
+        }
+        break;
+      case 'toggle-reimbursable':
+        if (this.state.showReimbursable) {
+          this.props.setShowReimbursable(false);
+          this.setState({ showReimbursable: false });
+        } else {
+          this.props.setShowReimbursable(true);
+          this.setState({ showReimbursable: true });
         }
         break;
       case 'toggle-reconciled':
@@ -1722,6 +1737,7 @@ class AccountInternal extends PureComponent<
       showBalances,
       balances,
       showCleared,
+      showReimbursable,
       showReconciled,
       filteredAmount,
     } = this.state;
@@ -1790,6 +1806,7 @@ class AccountInternal extends PureComponent<
                 showBalances={showBalances ?? false}
                 showExtraBalances={showExtraBalances ?? false}
                 showCleared={showCleared ?? false}
+                showReimbursable={showReimbursable ?? false}
                 showReconciled={showReconciled ?? false}
                 showEmptyMessage={showEmptyMessage ?? false}
                 balanceQuery={balanceQuery}
@@ -1855,6 +1872,7 @@ class AccountInternal extends PureComponent<
                   showBalances={!!allBalances}
                   showReconciled={showReconciled}
                   showCleared={!!showCleared}
+                  showReimbursable={!!showReimbursable}
                   showAccount={
                     !accountId ||
                     accountId === 'offbudget' ||
@@ -1986,6 +2004,9 @@ export function Account() {
   const [hideCleared, setHideCleared] = useSyncedPref(
     `hide-cleared-${params.id}`,
   );
+  const [hideReimbursable, setHideReimbursable] = useSyncedPref(
+    `hide-reimbursable-${params.id}`,
+  );
   const [hideReconciled, setHideReconciled] = useSyncedPref(
     `hide-reconciled-${params.id}`,
   );
@@ -2042,6 +2063,8 @@ export function Account() {
           setShowNetWorthChart={val => setShowNetWorthChart(String(val))}
           showCleared={String(hideCleared) !== 'true'}
           setShowCleared={val => setHideCleared(String(!val))}
+          showReimbursable={String(hideReimbursable) !== 'true'}
+          setShowReimbursable={val => setHideReimbursable(String(!val))}
           showReconciled={String(hideReconciled) !== 'true'}
           setShowReconciled={val => setHideReconciled(String(!val))}
           showExtraBalances={String(showExtraBalances) === 'true'}

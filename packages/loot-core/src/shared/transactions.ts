@@ -46,6 +46,8 @@ export function makeChild<T extends GenericTransactionEntity>(
     date: parent.date,
     cleared: parent.cleared != null ? parent.cleared : null,
     reconciled: 'reconciled' in data ? data.reconciled : parent.reconciled,
+    reimbursable:
+      'reimbursable' in data ? data.reimbursable : parent.reimbursable,
     starting_balance_flag:
       parent.starting_balance_flag != null
         ? parent.starting_balance_flag
