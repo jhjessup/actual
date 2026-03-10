@@ -340,14 +340,6 @@ const TransactionHeader = memo(
             }}
           />
         )}
-        {showReimbursable && (
-          <HeaderCell
-            value="↺"
-            width={38}
-            alignItems="center"
-            id="reimbursable"
-          />
-        )}
       </Row>
     );
   },
@@ -1738,18 +1730,6 @@ const Transaction = memo(function Transaction({
                   ? 'cleared'
                   : null
           }
-          isChild={isChild}
-          onEdit={onEdit}
-          onUpdate={onUpdate}
-        />
-      )}
-
-      {showReimbursable && (
-        <ReimbursableCell
-          id={id}
-          focused={focusedField === 'reimbursable'}
-          reimbursable={transaction.reimbursable}
-          reimbursed={transaction.reimbursed}
           isChild={isChild}
           onEdit={onEdit}
           onUpdate={onUpdate}
