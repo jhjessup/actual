@@ -35,7 +35,6 @@ import {
   SvgArrowsSynchronize,
   SvgCalendar3,
   SvgHyperlink2,
-  SvgRefreshArrow,
   SvgSubtract,
 } from '@actual-app/components/icons/v2';
 import { Popover } from '@actual-app/components/popover';
@@ -320,7 +319,7 @@ const TransactionHeader = memo(
         {showReimbursable && (
           <HeaderCell
             value="↻"
-            width={28}
+            width={38}
             alignItems="center"
             id="reimbursable"
           />
@@ -338,14 +337,6 @@ const TransactionHeader = memo(
                 selectAscDesc(field, ascDesc, 'cleared', 'asc'),
               );
             }}
-          />
-        )}
-        {showReimbursable && (
-          <HeaderCell
-            value="↺"
-            width={38}
-            alignItems="center"
-            id="reimbursable"
           />
         )}
       </Row>
@@ -1709,7 +1700,7 @@ const Transaction = memo(function Transaction({
 
       {showReimbursable &&
         (isPreview || isChild ? (
-          <Cell name="reimbursable" width={28} plain />
+          <Cell name="reimbursable" width={38} plain />
         ) : (
           <ReimbursableCell
             id={id}
@@ -1738,18 +1729,6 @@ const Transaction = memo(function Transaction({
                   ? 'cleared'
                   : null
           }
-          isChild={isChild}
-          onEdit={onEdit}
-          onUpdate={onUpdate}
-        />
-      )}
-
-      {showReimbursable && (
-        <ReimbursableCell
-          id={id}
-          focused={focusedField === 'reimbursable'}
-          reimbursable={transaction.reimbursable}
-          reimbursed={transaction.reimbursed}
           isChild={isChild}
           onEdit={onEdit}
           onUpdate={onUpdate}
