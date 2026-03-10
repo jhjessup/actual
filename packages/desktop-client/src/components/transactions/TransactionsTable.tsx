@@ -77,6 +77,7 @@ import type {
   TransactionEntity,
 } from 'loot-core/types/models';
 
+import { ReimbursableCell } from './ReimbursableCell';
 import {
   deserializeTransaction,
   isLastChild,
@@ -337,6 +338,14 @@ const TransactionHeader = memo(
                 selectAscDesc(field, ascDesc, 'cleared', 'asc'),
               );
             }}
+          />
+        )}
+        {showReimbursable && (
+          <HeaderCell
+            value="↺"
+            width={38}
+            alignItems="center"
+            id="reimbursable"
           />
         )}
       </Row>
@@ -1795,6 +1804,18 @@ const Transaction = memo(function Transaction({
         />
       )}
 
+      {showReimbursable && (
+        <ReimbursableCell
+          id={id}
+          focused={focusedField === 'reimbursable'}
+          reimbursable={transaction.reimbursable}
+          reimbursed={transaction.reimbursed}
+          isChild={isChild}
+          onEdit={onEdit}
+          onUpdate={onUpdate}
+        />
+      )}
+
       <Cell width={5} />
     </Row>
   );
@@ -2683,6 +2704,7 @@ export const TransactionTable = forwardRef(
         'debit',
         'credit',
         'cleared',
+        ...(props.showReimbursable ? ['reimbursable'] : []),
         'cancel',
         'add',
       ];
@@ -2701,6 +2723,7 @@ export const TransactionTable = forwardRef(
         'debit',
         'credit',
         'cleared',
+        ...(props.showReimbursable ? ['reimbursable'] : []),
       ];
 
       return getFields(item, fields);

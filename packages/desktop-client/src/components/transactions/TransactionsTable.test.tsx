@@ -1254,4 +1254,101 @@ describe('Transactions', () => {
     expect(queryField(container, 'debit', '', 2).textContent).toBe('');
     expect(queryField(container, 'credit', '', 2).textContent).toBe('0.00');
   });
+
+  describe('reimbursable column', () => {
+    test('reimbursable column is shown when showReimbursable is true', () => {
+      const transactions = generateTransactions(1);
+      transactions[0].reimbursable = false;
+
+      const { container } = render(
+        <LiveTransactionTable
+          transactions={transactions}
+          payees={payees}
+          accounts={accounts}
+          categoryGroups={categoryGroups}
+          currentAccountId={accounts[0].id}
+          showAccount
+          showCategory
+          showCleared
+          showReimbursable
+          isAdding={false}
+        />,
+      );
+
+      expect(
+        container.querySelector('[data-testid="reimbursable"]'),
+      ).not.toBeNull();
+    });
+
+    test('clicking reimbursable toggle calls onTransactionsChange with updated value', async () => {
+      const onTransactionsChange = vi.fn();
+      const transactions = generateTransactions(1);
+      transactions[0].reimbursable = false;
+      transactions[0].reimbursed = false;
+
+      const { container } = render(
+        <LiveTransactionTable
+          transactions={transactions}
+          payees={payees}
+          accounts={accounts}
+          categoryGroups={categoryGroups}
+          currentAccountId={accounts[0].id}
+          showAccount
+          showCategory
+          showCleared
+          showReimbursable
+          isAdding={false}
+          onTransactionsChange={onTransactionsChange}
+        />,
+      );
+
+      const reimbursableCell = queryField(container, 'reimbursable', '', 0);
+      expect(reimbursableCell).toBeTruthy();
+
+      const button = reimbursableCell.querySelector(
+        'div[data-testid=cell-button]',
+      );
+      expect(button).toBeTruthy();
+
+      await userEvent.click(button!);
+
+      expect(onTransactionsChange).toHaveBeenCalled();
+      const updatedTransactions: TransactionEntity[] =
+        onTransactionsChange.mock.calls[0][0];
+      expect(updatedTransactions[0].reimbursable).toBe(true);
+    });
+
+    test('reimbursed rows cannot be toggled via click', async () => {
+      const onTransactionsChange = vi.fn();
+      const transactions = generateTransactions(1);
+      transactions[0].reimbursable = true;
+      transactions[0].reimbursed = true;
+
+      const { container } = render(
+        <LiveTransactionTable
+          transactions={transactions}
+          payees={payees}
+          accounts={accounts}
+          categoryGroups={categoryGroups}
+          currentAccountId={accounts[0].id}
+          showAccount
+          showCategory
+          showCleared
+          showReimbursable
+          isAdding={false}
+          onTransactionsChange={onTransactionsChange}
+        />,
+      );
+
+      const reimbursableCell = queryField(container, 'reimbursable', '', 0);
+      const button = reimbursableCell?.querySelector(
+        'div[data-testid=cell-button]',
+      );
+      expect(button).toBeTruthy();
+
+      await userEvent.click(button!);
+
+      expect(onTransactionsChange).not.toHaveBeenCalled();
+    });
+  });
 });
