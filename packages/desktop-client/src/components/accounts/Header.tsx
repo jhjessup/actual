@@ -71,6 +71,7 @@ type AccountHeaderProps = {
   showBalances: boolean;
   showExtraBalances: boolean;
   showCleared: boolean;
+  showReimbursable: boolean;
   showReconciled: boolean;
   showEmptyMessage: boolean;
   balanceQuery: ComponentProps<typeof ReconcilingMessage>['balanceQuery'];
@@ -147,6 +148,7 @@ export function AccountHeader({
   showBalances,
   showExtraBalances,
   showCleared,
+  showReimbursable,
   showReconciled,
   showEmptyMessage,
   balanceQuery,
@@ -512,6 +514,7 @@ export function AccountHeader({
                       isSorted={isSorted}
                       showBalances={showBalances}
                       showCleared={showCleared}
+                      showReimbursable={showReimbursable}
                       showReconciled={showReconciled}
                       onMenuSelect={onMenuSelect}
                     />
@@ -735,6 +738,7 @@ type AccountMenuProps = {
   showBalances: boolean;
   canShowBalances: boolean;
   showCleared: boolean;
+  showReimbursable: boolean;
   showReconciled: boolean;
   isSorted: boolean;
   onMenuSelect: (
@@ -747,6 +751,7 @@ type AccountMenuProps = {
       | 'toggle-balance'
       | 'remove-sorting'
       | 'toggle-cleared'
+      | 'toggle-reimbursable'
       | 'toggle-reconciled'
       | 'toggle-net-worth-chart',
   ) => void;
@@ -759,6 +764,7 @@ function AccountMenu({
   showBalances,
   canShowBalances,
   showCleared,
+  showReimbursable,
   showReconciled,
   isSorted,
   onMenuSelect,
@@ -802,6 +808,12 @@ function AccountMenu({
           text: showCleared
             ? t('Hide "cleared" checkboxes')
             : t('Show "cleared" checkboxes'),
+        },
+        {
+          name: 'toggle-reimbursable',
+          text: showReimbursable
+            ? t('Hide "reimbursable" column')
+            : t('Show "reimbursable" column'),
         },
         {
           name: 'toggle-reconciled',

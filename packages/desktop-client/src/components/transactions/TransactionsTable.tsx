@@ -35,6 +35,7 @@ import {
   SvgArrowsSynchronize,
   SvgCalendar3,
   SvgHyperlink2,
+  SvgRefreshArrow,
   SvgSubtract,
 } from '@actual-app/components/icons/v2';
 import { Popover } from '@actual-app/components/popover';
@@ -148,7 +149,7 @@ type TransactionHeaderProps = {
   showCategory: boolean;
   showBalance: boolean;
   showCleared: boolean;
-  showReimbursable?: boolean;
+  showReimbursable: boolean;
   scrollWidth: number;
   showSelection: boolean;
   onSort: (field: string, ascDesc: 'asc' | 'desc') => void;
@@ -316,6 +317,14 @@ const TransactionHeader = memo(
             id="balance"
           />
         )}
+        {showReimbursable && (
+          <HeaderCell
+            value="↻"
+            width={28}
+            alignItems="center"
+            id="reimbursable"
+          />
+        )}
         {showCleared && (
           <HeaderCell
             value="✓"
@@ -345,6 +354,70 @@ const TransactionHeader = memo(
 );
 
 TransactionHeader.displayName = 'TransactionHeader';
+
+type ReimbursableCellProps = {
+  reimbursable: boolean;
+  reimbursed: boolean;
+  onToggle: () => void;
+};
+
+function ReimbursableCell({
+  reimbursable,
+  reimbursed,
+  onToggle,
+}: ReimbursableCellProps) {
+  const { t } = useTranslation();
+
+  const color = reimbursed
+    ? theme.noticeTextLight
+    : reimbursable
+      ? theme.warningText
+      : theme.pageTextSubdued;
+
+  const title = reimbursed
+    ? t('Reimbursed')
+    : reimbursable
+      ? t('Reimbursable')
+      : t('Not reimbursable');
+
+  return (
+    <Cell name="reimbursable" width={28} alignItems="center" plain>
+      <CellButton
+        style={{
+          padding: 3,
+          backgroundColor: 'transparent',
+          border: '1px solid transparent',
+          borderRadius: 50,
+          cursor: 'pointer',
+          ':focus': {
+            border: '1px solid ' + theme.formInputBorderSelected,
+            boxShadow: '0 1px 2px ' + theme.formInputBorderSelected,
+          },
+        }}
+        onSelect={onToggle}
+      >
+        <Tooltip
+          content={<Text>{title}</Text>}
+          placement="bottom"
+          style={{
+            ...styles.tooltip,
+            lineHeight: 1.5,
+            padding: '6px 10px',
+          }}
+        >
+          <SvgRefreshArrow
+            style={{
+              width: 13,
+              height: 13,
+              color,
+              opacity: reimbursable || reimbursed ? 1 : 0.3,
+            }}
+          />
+        </Tooltip>
+      </CellButton>
+    </Cell>
+  );
+}
 
 type StatusCellProps = {
   id: TransactionEntity['id'];
@@ -1101,6 +1174,8 @@ const Transaction = memo(function Transaction({
     category: categoryId,
     cleared,
     reconciled,
+    reimbursable,
+    reimbursed,
     forceUpcoming,
     is_parent: isParent,
     _unmatched = false,
@@ -1696,6 +1771,17 @@ const Transaction = memo(function Transaction({
         />
       )}
 
+      {showReimbursable &&
+        (isPreview || isChild ? (
+          <Cell name="reimbursable" width={28} plain />
+        ) : (
+          <ReimbursableCell
+            reimbursable={!!reimbursable}
+            reimbursed={!!reimbursed}
+            onToggle={() => onUpdate('reimbursable', !reimbursable)}
+          />
+        ))}
+
       {showCleared && (
         <StatusCell
           /* Icon field for all transactions */
@@ -2011,7 +2097,7 @@ type TransactionTableInnerProps = {
   showBalances: boolean;
   showReconciled: boolean;
   showCleared: boolean;
-  showReimbursable?: boolean;
+  showReimbursable: boolean;
   showAccount: boolean;
   showCategory: boolean;
   currentAccountId: AccountEntity['id'];
@@ -2142,6 +2228,7 @@ function TransactionTableInner({
       categoryGroups,
       payees,
       showCleared,
+      showReimbursable,
       showAccount,
       showBalances,
       balances,
@@ -2190,7 +2277,7 @@ function TransactionTableInner({
         showAccount={showAccount}
         showBalance={showBalances}
         showCleared={showCleared}
-        showReimbursable={props.showReimbursable}
+        showReimbursable={showReimbursable}
         selected={selected}
         highlighted={false}
         added={isNew?.(trans.id)}
@@ -2364,7 +2451,7 @@ export type TransactionTableProps = {
   showBalances: boolean;
   showReconciled: boolean;
   showCleared: boolean;
-  showReimbursable?: boolean;
+  showReimbursable: boolean;
   showAccount: boolean;
   showCategory: boolean;
   currentAccountId: AccountEntity['id'];

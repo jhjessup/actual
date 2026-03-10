@@ -25,6 +25,7 @@ export type TransactionEntity = {
   reconciled?: boolean;
   reimbursable?: boolean;
   reimbursed?: boolean;
+  reimbursed_by?: TransactionEntity['id'] | null;
   tombstone?: boolean;
   forceUpcoming?: boolean;
   schedule?: ScheduleEntity['id'];

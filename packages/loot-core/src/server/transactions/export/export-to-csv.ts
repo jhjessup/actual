@@ -41,6 +41,8 @@ export async function exportToCSV(
       amount,
       cleared,
       reconciled,
+      reimbursable,
+      reimbursed,
     }) => ({
       Account: accountNamesById[account],
       Date: date,
@@ -50,6 +52,8 @@ export async function exportToCSV(
       Amount: amount == null ? 0 : integerToAmount(amount),
       Cleared: cleared,
       Reconciled: reconciled,
+      Reimbursable: reimbursable,
+      Reimbursed: reimbursed,
     }),
   );
 
@@ -74,6 +78,8 @@ export async function exportQueryToCSV(query) {
         { Amount: 'amount' },
         { Cleared: 'cleared' },
         { Reconciled: 'reconciled' },
+        { Reimbursable: 'reimbursable' },
+        { Reimbursed: 'reimbursed' },
       ])
       .options({ splits: 'all' }),
   );
@@ -125,6 +131,8 @@ export async function exportQueryToCSV(query) {
           : trans.Cleared === true
             ? 'Cleared'
             : 'Not cleared',
+      Reimbursable: trans.Reimbursable === true,
+      Reimbursed: trans.Reimbursed === true,
     };
   });
 
