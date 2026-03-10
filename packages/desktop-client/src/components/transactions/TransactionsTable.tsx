@@ -35,7 +35,6 @@ import {
   SvgArrowsSynchronize,
   SvgCalendar3,
   SvgHyperlink2,
-  SvgRefreshArrow,
   SvgSubtract,
 } from '@actual-app/components/icons/v2';
 import { Popover } from '@actual-app/components/popover';
@@ -320,7 +319,7 @@ const TransactionHeader = memo(
         {showReimbursable && (
           <HeaderCell
             value="↻"
-            width={28}
+            width={38}
             alignItems="center"
             id="reimbursable"
           />
@@ -1701,7 +1700,7 @@ const Transaction = memo(function Transaction({
 
       {showReimbursable &&
         (isPreview || isChild ? (
-          <Cell name="reimbursable" width={28} plain />
+          <Cell name="reimbursable" width={38} plain />
         ) : (
           <ReimbursableCell
             id={id}
