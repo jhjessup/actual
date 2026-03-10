@@ -355,70 +355,6 @@ const TransactionHeader = memo(
 
 TransactionHeader.displayName = 'TransactionHeader';
 
-type ReimbursableCellProps = {
-  reimbursable: boolean;
-  reimbursed: boolean;
-  onToggle: () => void;
-};
-
-function ReimbursableCell({
-  reimbursable,
-  reimbursed,
-  onToggle,
-}: ReimbursableCellProps) {
-  const { t } = useTranslation();
-
-  const color = reimbursed
-    ? theme.noticeTextLight
-    : reimbursable
-      ? theme.warningText
-      : theme.pageTextSubdued;
-
-  const title = reimbursed
-    ? t('Reimbursed')
-    : reimbursable
-      ? t('Reimbursable')
-      : t('Not reimbursable');
-
-  return (
-    <Cell name="reimbursable" width={28} alignItems="center" plain>
-      <CellButton
-        style={{
-          padding: 3,
-          backgroundColor: 'transparent',
-          border: '1px solid transparent',
-          borderRadius: 50,
-          cursor: 'pointer',
-          ':focus': {
-            border: '1px solid ' + theme.formInputBorderSelected,
-            boxShadow: '0 1px 2px ' + theme.formInputBorderSelected,
-          },
-        }}
-        onSelect={onToggle}
-      >
-        <Tooltip
-          content={<Text>{title}</Text>}
-          placement="bottom"
-          style={{
-            ...styles.tooltip,
-            lineHeight: 1.5,
-            padding: '6px 10px',
-          }}
-        >
-          <SvgRefreshArrow
-            style={{
-              width: 13,
-              height: 13,
-              color,
-              opacity: reimbursable || reimbursed ? 1 : 0.3,
-            }}
-          />
-        </Tooltip>
-      </CellButton>
-    </Cell>
-  );
-}
-
 type StatusCellProps = {
   id: TransactionEntity['id'];
   status?: StatusTypes | null;
@@ -1776,9 +1712,13 @@ const Transaction = memo(function Transaction({
           <Cell name="reimbursable" width={28} plain />
         ) : (
           <ReimbursableCell
+            id={id}
             reimbursable={!!reimbursable}
             reimbursed={!!reimbursed}
-            onToggle={() => onUpdate('reimbursable', !reimbursable)}
+            focused={focusedField === 'reimbursable'}
+            isChild={false}
+            onEdit={onEdit}
+            onUpdate={onUpdate}
           />
         ))}
 
