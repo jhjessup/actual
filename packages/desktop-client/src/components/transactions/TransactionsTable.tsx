@@ -76,6 +76,7 @@ import type {
   TransactionEntity,
 } from 'loot-core/types/models';
 
+import { ReimbursableCell } from './ReimbursableCell';
 import {
   deserializeTransaction,
   isLastChild,
@@ -147,6 +148,7 @@ type TransactionHeaderProps = {
   showCategory: boolean;
   showBalance: boolean;
   showCleared: boolean;
+  showReimbursable?: boolean;
   scrollWidth: number;
   showSelection: boolean;
   onSort: (field: string, ascDesc: 'asc' | 'desc') => void;
@@ -161,6 +163,7 @@ const TransactionHeader = memo(
     showCategory,
     showBalance,
     showCleared,
+    showReimbursable,
     scrollWidth,
     onSort,
     ascDesc,
@@ -326,6 +329,14 @@ const TransactionHeader = memo(
                 selectAscDesc(field, ascDesc, 'cleared', 'asc'),
               );
             }}
+          />
+        )}
+        {showReimbursable && (
+          <HeaderCell
+            value="↺"
+            width={38}
+            alignItems="center"
+            id="reimbursable"
           />
         )}
       </Row>
@@ -839,6 +850,7 @@ type TransactionProps = {
   showAccount?: boolean;
   showBalance?: boolean;
   showCleared?: boolean;
+  showReimbursable?: boolean;
   showZeroInDeposit?: boolean;
   style?: CSSProperties;
   selected?: boolean;
@@ -893,6 +905,7 @@ const Transaction = memo(function Transaction({
   showAccount,
   showBalance,
   showCleared,
+  showReimbursable,
   showZeroInDeposit,
   style,
   selected,
@@ -1705,6 +1718,18 @@ const Transaction = memo(function Transaction({
         />
       )}
 
+      {showReimbursable && (
+        <ReimbursableCell
+          id={id}
+          focused={focusedField === 'reimbursable'}
+          reimbursable={transaction.reimbursable}
+          reimbursed={transaction.reimbursed}
+          isChild={isChild}
+          onEdit={onEdit}
+          onUpdate={onUpdate}
+        />
+      )}
+
       <Cell width={5} />
     </Row>
   );
@@ -1806,6 +1831,7 @@ type NewTransactionProps = {
   showBalance?: boolean;
   balance?: number | null;
   showCleared?: boolean;
+  showReimbursable?: boolean;
   transactions: TransactionEntity[];
   transferAccountsByTransaction: {
     [id: TransactionEntity['id']]: AccountEntity | null;
@@ -1823,6 +1849,7 @@ function NewTransaction({
   showAccount,
   showBalance,
   showCleared,
+  showReimbursable,
   dateFormat,
   hideFraction,
   onClose,
@@ -1888,6 +1915,7 @@ function NewTransaction({
           showAccount={showAccount}
           showBalance={showBalance}
           showCleared={showCleared}
+          showReimbursable={showReimbursable}
           focusedField={
             editingTransaction === transaction.id ? focusedField : undefined
           }
@@ -1983,6 +2011,7 @@ type TransactionTableInnerProps = {
   showBalances: boolean;
   showReconciled: boolean;
   showCleared: boolean;
+  showReimbursable?: boolean;
   showAccount: boolean;
   showCategory: boolean;
   currentAccountId: AccountEntity['id'];
@@ -2161,6 +2190,7 @@ function TransactionTableInner({
         showAccount={showAccount}
         showBalance={showBalances}
         showCleared={showCleared}
+        showReimbursable={props.showReimbursable}
         selected={selected}
         highlighted={false}
         added={isNew?.(trans.id)}
@@ -2228,6 +2258,7 @@ function TransactionTableInner({
           showCategory={props.showCategory}
           showBalance={props.showBalances}
           showCleared={props.showCleared}
+          showReimbursable={props.showReimbursable}
           scrollWidth={scrollWidth}
           onSort={props.onSort}
           ascDesc={props.ascDesc}
@@ -2254,6 +2285,7 @@ function TransactionTableInner({
               showAccount={props.showAccount}
               showBalance={props.showBalances}
               showCleared={props.showCleared}
+              showReimbursable={props.showReimbursable}
               dateFormat={dateFormat}
               hideFraction={props.hideFraction}
               onClose={props.onCloseAddTransaction}
@@ -2332,6 +2364,7 @@ export type TransactionTableProps = {
   showBalances: boolean;
   showReconciled: boolean;
   showCleared: boolean;
+  showReimbursable?: boolean;
   showAccount: boolean;
   showCategory: boolean;
   currentAccountId: AccountEntity['id'];
@@ -2584,6 +2617,7 @@ export const TransactionTable = forwardRef(
         'debit',
         'credit',
         'cleared',
+        ...(props.showReimbursable ? ['reimbursable'] : []),
         'cancel',
         'add',
       ];
@@ -2602,6 +2636,7 @@ export const TransactionTable = forwardRef(
         'debit',
         'credit',
         'cleared',
+        ...(props.showReimbursable ? ['reimbursable'] : []),
       ];
 
       return getFields(item, fields);

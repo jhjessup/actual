@@ -23,6 +23,8 @@ export type TransactionEntity = {
   sort_order?: number;
   cleared?: boolean;
   reconciled?: boolean;
+  reimbursable?: boolean;
+  reimbursed?: boolean;
   tombstone?: boolean;
   forceUpcoming?: boolean;
   schedule?: ScheduleEntity['id'];
