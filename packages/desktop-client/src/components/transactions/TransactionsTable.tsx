@@ -2622,8 +2622,8 @@ export const TransactionTable = forwardRef(
         'category',
         'debit',
         'credit',
-        'cleared',
         ...(props.showReimbursable ? ['reimbursable'] : []),
+        'cleared',
         'cancel',
         'add',
       ];
@@ -2641,8 +2641,8 @@ export const TransactionTable = forwardRef(
         'category',
         'debit',
         'credit',
-        'cleared',
         ...(props.showReimbursable ? ['reimbursable'] : []),
+        'cleared',
       ];
 
       return getFields(item, fields);
