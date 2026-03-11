@@ -75,7 +75,7 @@ test.describe('Mobile Transactions', () => {
 - button "HSBC" [disabled]
 - text: Date
 - textbox [disabled]: 2025-10-31
-- text: Cleared Notes
+- text: Cleared Reimbursable Notes
 - textbox [disabled]: just a note`);
   });
 
